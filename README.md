@@ -1,5 +1,6 @@
 # Watering System
 This watering system was designed to water my flowers based on a timetable.
+
 Files Tree					Description
 ├── Consol					The content of this folder is used for the terminal interface
 │	├── CH_Stat				Reading this file gives the state of all channels
