@@ -1,6 +1,13 @@
 # Watering System
-This watering system was designed to water my flowers based on a timetable.
-
+This watering system was designed to water plants based on a timetable.
+## LabVIEW Version
+LabVIEW community 2021. [Download from here](https://www.ni.com/en-gb/support/downloads/software-products/download.labview-community.html)
+## Code Structure
+THe Main.vi has 3 Producers, 1 consumer and 1 Temperature loggong loop
+### The producers
+1. Data-Based Producer "PC Only": Used to communicate during development.
+2. Data-Based Producer "Pi Only": Used to commuincate through RPI's terminal 
+3. Time-Based Event Producer: User-indepent producer which reads the timetable and send a command to a specifif valve.
 ```consol
 Files Tree			Description
 ├── Consol			The content of this folder is used for the terminal interface
