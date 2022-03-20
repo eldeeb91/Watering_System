@@ -4,6 +4,7 @@ This watering system was designed to water plants based on a timetable.
 LabVIEW community 2021. [Download from here](https://www.ni.com/en-gb/support/downloads/software-products/download.labview-community.html)
 ## Code Structure
 THe Main.vi has 3 Producers, 1 consumer and 1 Temperature loggong loop
+![My Image](Document/img/Sw_Architecture.PNG)
 ### The producers
 1. Data-Based Producer "PC Only": Used to communicate during development.
 2. Data-Based Producer "Pi Only": Used to commuincate through RPI's terminal 
