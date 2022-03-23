@@ -3,11 +3,11 @@ This watering system was designed to water plants based on a timetable.
 ## LabVIEW Version
 LabVIEW community 2021. [Download from here](https://www.ni.com/en-gb/support/downloads/software-products/download.labview-community.html)
 ## Preparing the Pi
-[Installing LabVIEW runtine on RPI](https://www.labviewmakerhub.com/doku.php?id=learn:tutorials:libraries:linx:3-0:raspberry-pi-setup)
-
-https://www.mediamongrels.com/make-ing-with-labview-raspberry-pi-part-3-raspberry-pi-setup/
-
-https://www.labviewmakerhub.com/doku.php?id=learn:tutorials:libraries:linx:3-0
+1. [Download RPI image](https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-05-28/)
+2. Flash the SD card using the downloaded image[[1]](#1). Enable SSH, for user pi and password raspberry.
+3. [Installing LabVIEW runtine on RPI](https://www.labviewmakerhub.com/doku.php?id=learn:tutorials:libraries:linx:3-0:raspberry-pi-setup), another toturial that has a manual method of installing labview runtime on rpi [here](https://www.mediamongrels.com/make-ing-with-labview-raspberry-pi-part-3-raspberry-pi-setup/)
+4.  For the manual installarion, the command sudo apt-get install lvrt21-schroot -y is used to install the lv runtime where 21 is the version.
+5.  More toturials can be found [here](https://www.labviewmakerhub.com/doku.php?id=learn:tutorials:libraries:linx:3-0)
 
 ## Code Structure
 THe Main.vi has 3 Producers, 1 consumer and 1 Temperature loggong loop
@@ -33,28 +33,29 @@ Files Tree			Description
  	├── CFG.ini
 	├── Plant_Digital_OP
 	├── RstFlag
-	├── TimeTable
-	└── TimeTable.save
+	└── TimeTable
 ```
 #### The Pi Producer
-The Pi Producer can be used during the development and deployment. The LINX library has no native method to communicate through terminal interface. The workaround was to make a data-based producer loop[[1]](#1). The polling rate is defined in the CFG cluster "Producer_PI Speed [ms]". The cluster is stored:
+The Pi Producer can be used during the development and deployment. The LINX library has no native method to communicate through terminal interface. The workaround was to make a data-based producer loop[[2]](#2). The polling rate is defined in the CFG cluster "Producer_PI Speed [ms]". The cluster is stored:
 
 	/home/pi/GardenApp/Settings/CFG.ini
 
 The commands to the Pi Producer must be written to ../Consol/Input. The Data_Prod.vi will read the file and remove the entered text. If any error happend in the Pi Producer it will be written to the ../Consol/Output file. Functions can be added to the .bashrc file to automate the commands as follows
 
 ```consol
-Garden_Open_Valve() { echo "Valve -Open Valve -$1" | sudo tee -a /home/pi/GardenApp/Consol/Input ;sleep 2;more /home/pi/GardenApp/Consol/Output; echo''|sudo touch /home/pi/GardenApp/Consol/Output;}
-Garden_Close_Valve() { echo "Valve -Close Valve -$1" | sudo tee -a /home/pi/GardenApp/Consol/Input ;sleep 2;more /home/pi/GardenApp/Consol/Output; echo''|sudo touch /home/pi/GardenApp/Consol/Output;}
-Garden_Open_Pump() { echo "Valve -Open Pump -$1 -" | sudo tee -a /home/pi/GardenApp/Consol/Input ;sleep 2;more /home/pi/GardenApp/Consol/Output; echo''|sudo touch /home/pi/GardenApp/Consol/Output;}
-Garden_Close_Pump() { echo "Valve -Close Pump -$1 -" | sudo tee -a /home/pi/GardenApp/Consol/Input ;sleep 2;more /home/pi/GardenApp/Consol/Output; echo''|sudo touch /home/pi/GardenApp/Consol/Output;}
-Garden_Wait_Valve() { echo "Valve -Wait Valve -$1 -$2" | sudo tee -a /home/pi/GardenApp/Consol/Input ;sleep 2;more /home/pi/GardenApp/Consol/Output; echo''|sudo touch /home/pi/GardenApp/Consol/Output;}
+Garden_Open_Valve() { echo "Valve -Open Valve -$1" | sudo tee -a /home/pi/GardenApp/Consol/Input ;sleep 2;more /home/pi/GardenApp/Consol/Output;}
+Garden_Close_Valve() { echo "Valve -Close Valve -$1" | sudo tee -a /home/pi/GardenApp/Consol/Input ;sleep 2;more /home/pi/GardenApp/Consol/Output;}
+Garden_Open_Pump() { echo "Valve -Open Pump" | sudo tee -a /home/pi/GardenApp/Consol/Input ;sleep 2;more /home/pi/GardenApp/Consol/Output;}
+Garden_Close_Pump() { echo "Valve -Close Pump -$1 -" | sudo tee -a /home/pi/GardenApp/Consol/Input ;sleep 2;more /home/pi/GardenApp/Consol/Output;}
+Garden_Wait_Valve() { echo "Valve -Wait Valve -$1 -$2" | sudo tee -a /home/pi/GardenApp/Consol/Input ;sleep 2;more /home/pi/GardenApp/Consol/Output;}
 Garden_Ch_State() { more /home/pi/GardenApp/Consol/CH_Stat;}
-Garden_Temp_Read() { echo "Temp -Read" | sudo tee -a /home/pi/GardenApp/Consol/Input ;sleep 2;more /home/pi/GardenApp/Consol/Output;more /home/pi/GardenApp/Consol/Temp; echo''|sudo touch /home/pi/GardenApp/Consol/Output;}
+Garden_Temp_Read() { echo "Temp -Read" | sudo tee -a /home/pi/GardenApp/Consol/Input ;sleep 2;more /home/pi/GardenApp/Consol/Output;more /home/pi/GardenApp/Consol/Temp;}                  
 ```
 By adding the previous functions to the end of .bashrc file. The commands will be avaailbe through the terminal auto-complete, as shown in the next exmaple:
 ![TerCommands](Document/img/TerminalCommands.PNG)
 
 ## References
 <a id="1">[1]</a>
+https://howchoo.com/pi/raspberry-pi-imager
+<a id="2">[2]</a>
 https://www.ni.com/en-gb/support/documentation/supplemental/21/producer-consumer-architecture-in-labview0.html
